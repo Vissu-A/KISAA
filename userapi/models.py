@@ -13,7 +13,7 @@ class MyUserManager(BaseUserManager):
     '''
     This is the manager class for MyUser model.
     '''
-    def create_user(self, email, password, user_name, **extra_fields):
+    def create_user(self, email, password, username, **extra_fields):
         """
         Create and save a User with the given email, fullname, and password.
         """
@@ -23,16 +23,16 @@ class MyUserManager(BaseUserManager):
         if not password:
             raise ValueError('The user must have a password')
 
-        if not user_name:
+        if not username:
             raise ValueError('The user must have a user name')
 
         email = self.normalize_email(email)
-        user = self.model(email=email, user_name=user_name, **extra_fields)
+        user = self.model(email=email, username=username, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password, user_name, **extra_fields):
+    def create_superuser(self, email, password, username, **extra_fields):
         """
         Create and save a SuperUser with the given email, fullname, and password.
         """
@@ -45,7 +45,7 @@ class MyUserManager(BaseUserManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
 
-        return self.create_user(email, password, user_name, **extra_fields)
+        return self.create_user(email, password, username, **extra_fields)
 
 
 class MyUser(AbstractBaseUser, PermissionsMixin):
@@ -62,7 +62,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     # this is returned when we call get_email_field_name() method.
     EMAIL_FIELD = 'email'
     uid = models.UUIDField(primary_key = True, default = uuid.uuid4, editable = False)
-    user_name = models.CharField(max_length=150, unique=True, blank=False, null=False)
+    username = models.CharField(max_length=150, unique=True, blank=False, null=False)
     email = models.EmailField(max_length=255, unique=True, blank=False, null=False)
     gender = models.CharField(
         max_length=7,

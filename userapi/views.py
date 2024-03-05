@@ -33,7 +33,7 @@ def user_signup(request):
     if serialized_data.is_valid(raise_exception = True):
         print(f"serialized data : {serialized_data.validated_data}")
         user = serialized_data.save()
-        print(f"user {user.user_name} created successfully...")
+        print(f"user {user.username} created successfully...")
 
         # get domain
         domain = get_current_site(request).domain
@@ -45,21 +45,21 @@ def user_signup(request):
         uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
 
         # construct activation link with uidb64, token
-        link = reverse('activate-account', kwargs={'uidb64': uidb64, 'token': token})
+        link = reverse('user_activate', kwargs={'uidb64': uidb64, 'token': token})
 
         activation_link = 'http://'+domain+link
         print('###############################################')
         print('Activation link is: ', activation_link)
         print('###############################################')
 
-        task =  account_activate_send_mail.delay(user.email, user.user_name, activation_link)
+        task =  account_activate_send_mail.delay(user.email, user.username, activation_link)
         print('Task ID is: ',task.task_id)
     return Response({"msg":"user created successfully"},status=status.HTTP_201_CREATED)
 
-@api_view(['GET'])
+@api_view(['POST'])
 @authentication_classes([])
 @permission_classes([])
-def activate_account(uidb64, token):
+def activate_account(request, uidb64, token):
     '''
     This method is for activating the user account.
     Args:
@@ -89,7 +89,9 @@ def activate_account(uidb64, token):
         return Response({"msg": 'Account activated successfully'})
 
 @api_view(['GET'])
-def get_user_list():
+@authentication_classes([])
+@permission_classes([])
+def get_user_list(request):
     '''
     This function is used to get the list of users.
     Args:

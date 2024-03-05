@@ -13,14 +13,14 @@ class UserCreateSerializer(serializers.ModelSerializer):
         This is the meta class to pick the model and fields
         '''
         model = MyUser
-        fields = ['user_name', 'email', 'gender', 'password']
+        fields = ['username', 'email', 'gender', 'password']
 
     def create(self, validated_data):
-        username = validated_data.get('user_name')
+        username = validated_data.get('username')
         email = validated_data.get('email')
         password = validated_data.get('password')
 
-        user = MyUser.objects.create_user(user_name = username, email = email, password = password)
+        user = MyUser.objects.create_user(username = username, email = email, password = password)
         if user:
             user.is_active = False
             user.gender =  validated_data.get('gender') if validated_data.get('gender') else ""
@@ -37,7 +37,7 @@ class UserListSerializer(serializers.ModelSerializer):
         This class is to pick the model and fields.
         '''
         model = MyUser
-        fields = ['user_name', 'email', 'gender']
+        fields = ['username', 'email', 'gender']
         exclude = []
         read_only_fields = []
         depth = 1
