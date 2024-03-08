@@ -58,7 +58,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     '''
     USERNAME_FIELD = 'email'
     # while creating superuser from command it will ask these fields to enter value.
-    REQUIRED_FIELDS = ['user_name', 'gender']
+    REQUIRED_FIELDS = ['username', 'gender']
     # this is returned when we call get_email_field_name() method.
     EMAIL_FIELD = 'email'
     uid = models.UUIDField(primary_key = True, default = uuid.uuid4, editable = False)
