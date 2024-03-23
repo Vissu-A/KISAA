@@ -56,10 +56,10 @@ def user_signup(request):
         print('Task ID is: ',task.task_id)
     return Response({"msg":"user created successfully"},status=status.HTTP_201_CREATED)
 
-@api_view(['POST'])
+@api_view(['GET'])
 @authentication_classes([])
 @permission_classes([])
-def activate_account(request, uidb64, token):
+def activate_account(request):
     '''
     This method is for activating the user account.
     Args:
@@ -69,11 +69,13 @@ def activate_account(request, uidb64, token):
     Returns:
         None
     '''
+    uidb64 = request.query_params.get('userid')
+    token = request.query_params.get('token')
     uid = force_str(urlsafe_base64_decode(uidb64))
     print('#######################################')
     print('user id is: ', uid)
     print('#######################################')
-    user = get_object_or_404(MyUser, UId=uid)
+    user = get_object_or_404(MyUser, uid=uid)
 
     if not token_generator.check_token(user, token):
         return Response({"msg":"invalid token...!"},status=status.HTTP_406_NOT_ACCEPTABLE)

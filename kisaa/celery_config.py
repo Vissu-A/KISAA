@@ -5,11 +5,9 @@ from celery import Celery
 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "kisaa.settings")
-os.environ.setdefault('FORKED_BY_MULTIPROCESSING', '1')
 
 app = Celery('kisaa')
 app.conf.enable_utc = False
-app.conf.update(timezone = "Asia/Kolkata")
 
 
 # Using a string here means the worker doesn't have to serialize

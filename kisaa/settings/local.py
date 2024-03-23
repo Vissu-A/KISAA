@@ -1,4 +1,7 @@
-from .base import *
+'''
+Django settings module for local environment.
+'''
+
 from decouple import config, Csv
 from kombu.utils.url import safequote
 
@@ -17,25 +20,28 @@ DATABASES = {
     }
 }
 
-# Celery settings
-aws_access_key_id = safequote(config('local_celery_broker_aws_sqs_access_key_id'))
+# Celery Amazon SQS settings
+aws_access_key = safequote(config('local_celery_broker_aws_sqs_access_key_id'))
 aws_secret_key = safequote(config('local_celery_broker_aws_sqs_secret_access_key'))
-broker_url = f"sqs://{aws_access_key_id}:{aws_secret_key}@"
+CELERY_BROKER_URL = f"sqs://{aws_access_key}:{aws_secret_key}@"
+CELERY_RESULT_BACKEND = config('local_celery_broker_aws_sqs_result_backend')
+CELERY_BROKER_TRANSPORT_OPTIONS = {
+    'region': 'us-east-1',
+    'polling_interval': 0.3,
+    'visibility_timeout': 60,
+    'queue_name_prefix': 'Kisaa-',
+    'wait_time_seconds': 15
+}
 
-CELERY_BROKER_URL = broker_url
-CELERY_RESULT_BACKEND = config('local_celery_result_backend')
+# Celery Redis settings
+# CELERY_BROKER_URL = config('local_celery_broker_url')
+# CELERY_RESULT_BACKEND = config('local_celery_result_backend')
+
+# Celery common settings
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Kolkata'
-# broker_transport = "sqs"
-# broker_transport_options= {
-#     "region": "us-east-1",
-#     'max_retries': 3,
-#     "polling_interval": 20,
-#     'visibility_timeout': 40,
-#     'queue_name_prefix': 'kisaa-celery-',
-# }
 
 # Email settings
 EMAIL_BACKEND = config('local_email_backend')

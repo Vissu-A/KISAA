@@ -11,15 +11,15 @@ def account_activate_send_mail(email, fname, act_link):
     '''
 
     email_subject = 'Activate your account'
-    # email_body = 'Hi '+fname+'.\n'+'Please click on this link to activate\
-    #     your account'+'\n'+act_link
-    email_body = "Hi, Hello"
+    email_body = 'Hi '+fname+'.\n'+'Please click on this link to activate your account'+\
+    '\n'+act_link
+    #email_body = "Hi, Hello"
 
     email = EmailMessage(
         email_subject,
         email_body,
         'djangoclient97@gmail.com',
-        ['viswanadh.adapala.org@gmail.com',]
+        [email,]
     )
 
     email.send(fail_silently=False)
