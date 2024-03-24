@@ -59,7 +59,7 @@ def user_signup(request):
 @api_view(['GET'])
 @authentication_classes([])
 @permission_classes([])
-def activate_account(request):
+def activate_account(request, uidb64, token):
     '''
     This method is for activating the user account.
     Args:
@@ -69,8 +69,8 @@ def activate_account(request):
     Returns:
         None
     '''
-    uidb64 = request.query_params.get('userid')
-    token = request.query_params.get('token')
+    # uidb64 = request.query_params.get('userid')
+    # token = request.query_params.get('token')
     uid = force_str(urlsafe_base64_decode(uidb64))
     print('#######################################')
     print('user id is: ', uid)
