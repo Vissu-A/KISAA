@@ -136,13 +136,13 @@ class UserLogout(APIView):
 
     def post(self, request, format=None):
         '''
-        This function is used to get the list of users.
+        This function is used to logout the user.
         Args:
             self : NA
             request(obj) : request object
             format : NA
         Returns:
-            list : users list
+            None
         '''
         refresh_token = request.data.get("refresh")
         token = RefreshToken(refresh_token)

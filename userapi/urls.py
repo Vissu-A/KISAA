@@ -1,10 +1,9 @@
 '''
 user api routes/endpoints.
 '''
-from django.urls import path, re_path
+from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenBlacklistView
 from . import views
-from . import func_base_views
 
 urlpatterns = [
     path('signup/', views.UserCreate.as_view(), name="user_create"),
