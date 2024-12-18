@@ -134,7 +134,7 @@ class UserLogout(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def post(self, request, format=None):
+    def post(self, request):
         '''
         This function is used to logout the user.
         Args:
